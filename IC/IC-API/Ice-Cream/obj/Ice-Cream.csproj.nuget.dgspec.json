@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/trantien/Downloads/Project/Ice-Cream/IC/IC-API/Ice-Cream/Ice-Cream.csproj": {}
+    "/Users/trantien/Downloads/Project/IC2/Ice-Cream2222/IC/IC-API/Ice-Cream/Ice-Cream.csproj": {}
   },
   "projects": {
-    "/Users/trantien/Downloads/Project/Ice-Cream/IC/IC-API/Ice-Cream/Ice-Cream.csproj": {
+    "/Users/trantien/Downloads/Project/IC2/Ice-Cream2222/IC/IC-API/Ice-Cream/Ice-Cream.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/trantien/Downloads/Project/Ice-Cream/IC/IC-API/Ice-Cream/Ice-Cream.csproj",
+        "projectUniqueName": "/Users/trantien/Downloads/Project/IC2/Ice-Cream2222/IC/IC-API/Ice-Cream/Ice-Cream.csproj",
         "projectName": "Ice-Cream",
-        "projectPath": "/Users/trantien/Downloads/Project/Ice-Cream/IC/IC-API/Ice-Cream/Ice-Cream.csproj",
+        "projectPath": "/Users/trantien/Downloads/Project/IC2/Ice-Cream2222/IC/IC-API/Ice-Cream/Ice-Cream.csproj",
         "packagesPath": "/Users/trantien/.nuget/packages/",
-        "outputPath": "/Users/trantien/Downloads/Project/Ice-Cream/IC/IC-API/Ice-Cream/obj/",
+        "outputPath": "/Users/trantien/Downloads/Project/IC2/Ice-Cream2222/IC/IC-API/Ice-Cream/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/trantien/.nuget/NuGet/NuGet.Config"
@@ -67,9 +67,17 @@
               "target": "Package",
               "version": "[8.0.10, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[8.0.2, )"
+            },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[112.1.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

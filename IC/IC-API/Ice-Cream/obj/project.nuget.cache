@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BdlOREy4NOo=",
+  "dgSpecHash": "05Hr2AFwrRY=",
   "success": true,
-  "projectFilePath": "/Users/trantien/Downloads/Project/Ice-Cream/IC/IC-API/Ice-Cream/Ice-Cream.csproj",
+  "projectFilePath": "/Users/trantien/Downloads/Project/IC2/Ice-Cream2222/IC/IC-API/Ice-Cream/Ice-Cream.csproj",
   "expectedPackageFiles": [
     "/Users/trantien/.nuget/packages/bcrypt.net-next/4.0.3/bcrypt.net-next.4.0.3.nupkg.sha512",
     "/Users/trantien/.nuget/packages/bouncycastle.cryptography/2.4.0/bouncycastle.cryptography.2.4.0.nupkg.sha512",
@@ -35,7 +35,9 @@
     "/Users/trantien/.nuget/packages/mimekit/4.8.0/mimekit.4.8.0.nupkg.sha512",
     "/Users/trantien/.nuget/packages/mono.texttemplating/2.2.1/mono.texttemplating.2.2.1.nupkg.sha512",
     "/Users/trantien/.nuget/packages/mysqlconnector/2.3.5/mysqlconnector.2.3.5.nupkg.sha512",
+    "/Users/trantien/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/Users/trantien/.nuget/packages/pomelo.entityframeworkcore.mysql/8.0.2/pomelo.entityframeworkcore.mysql.8.0.2.nupkg.sha512",
+    "/Users/trantien/.nuget/packages/restsharp/112.1.0/restsharp.112.1.0.nupkg.sha512",
     "/Users/trantien/.nuget/packages/swashbuckle.aspnetcore/6.4.0/swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "/Users/trantien/.nuget/packages/swashbuckle.aspnetcore.swagger/6.4.0/swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
     "/Users/trantien/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.4.0/swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",

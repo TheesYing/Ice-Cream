@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ice_Cream.DB;
+using Ice_Cream.DTO;
 
 namespace Ice_Cream.Controllers
 {
@@ -24,28 +25,78 @@ namespace Ice_Cream.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllOrders()
         {
-            var ordersDTO = await _context.Orders
-                .Select(o => new OrderDTO
-                {
-                    Id = o.Id,
-                    Email = o.Email,
-                    ContactDetails = o.ContactDetails,
-                    Address = o.Address,
-                    OrderType = o.OrderType,
-                    OrderAmount = o.OrderAmount,
-                    OrderPrice = o.OrderPrice,
-                    CreatedAt = o.CreatedAt
-                })
+            // Eager load PaymentInfo, Subscription, and Books
+            var orders = await _context.Orders
+                .Include(o => o.PaymentInfo)        // Include PaymentInfo
+                .Include(o => o.Subscription)       // Include Subscription
+                .Include(o => o.Book)              // Include Books
                 .ToListAsync();
 
+            var ordersDTO = orders.Select(order => new OrderDTO
+            {
+                Id = order.Id,
+                Email = order.Email,
+                ContactDetails = order.ContactDetails,
+                Address = order.Address,
+                PaymentInfoId = order.PaymentInfoId,
+                SubscriptionId = order.SubscriptionId,
+                BookId = order.BookId,
+                OrderPrice = order.OrderPrice,
+                CreatedAt = order.CreatedAt,
+
+                // If PaymentInfo is null, return an empty list
+                PaymentInfos = order.PaymentInfo == null ? new List<PaymentDTO>() : new List<PaymentDTO>
+        {
+            new PaymentDTO
+            {
+                Id = order.PaymentInfo.Id,
+                AccountId = order.PaymentInfo.AccountId,
+                Amount = order.PaymentInfo.Amount,
+                Currency = order.PaymentInfo.Currency,
+                Status = order.PaymentInfo.Status,
+                TransactionId = order.PaymentInfo.TransactionId,
+                CreatedAt = order.PaymentInfo.CreatedAt
+            }
+        },
+
+                // If Subscription is null, return an empty list
+                Subscriptions = order.Subscription == null ? new List<SubscriptionDTO>() : new List<SubscriptionDTO>
+        {
+            new SubscriptionDTO
+            {
+                Id = order.Subscription.Id,
+                SubType = order.Subscription.SubType,
+                SubDescription = order.Subscription.SubDescription,
+                SubPrice = order.Subscription.SubPrice
+            }
+        },
+
+                // Handle Books as a list, even if one book
+                Books = order.Book == null ? new List<BookDTO>() : new List<BookDTO>
+        {
+            new BookDTO
+            {
+                    Id = order.Id,
+                    BookName = order.Book.BookName,
+                    BookDescription = order.Book.BookDescription,
+                    BookDate = order.Book.BookDate,
+                    BookImage = order.Book.BookImage
+                }
+            }
+            });
             return Ok(ordersDTO);
         }
+    
 
         // Get Order By Id
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDTO>> GetOrderById(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders
+    .Include(o => o.PaymentInfo)        // Include PaymentInfo
+    .Include(o => o.Subscription)      // Include Subscription
+    .Include(o => o.Book)             // Include Books (assuming it's a collection)
+    .FirstOrDefaultAsync(o => o.Id == id);
             if (order == null) return NotFound();
 
             var orderDTO = new OrderDTO
@@ -54,12 +105,50 @@ namespace Ice_Cream.Controllers
                 Email = order.Email,
                 ContactDetails = order.ContactDetails,
                 Address = order.Address,
-                OrderType = order.OrderType,
-                OrderAmount = order.OrderAmount,
+                PaymentInfoId = order.PaymentInfoId,
+                SubscriptionId = order.SubscriptionId,
+                BookId = order.BookId,
                 OrderPrice = order.OrderPrice,
-                CreatedAt = order.CreatedAt
-            };
+                CreatedAt = order.CreatedAt,
+                PaymentInfos = order.PaymentInfo == null ? new List<PaymentDTO>() : new List<PaymentDTO>
+        {
+            new PaymentDTO
+            {
+                Id = order.PaymentInfo.Id,
+                AccountId = order.PaymentInfo.AccountId,
+                Amount = order.PaymentInfo.Amount,
+                Currency = order.PaymentInfo.Currency,
+                Status = order.PaymentInfo.Status,
+                TransactionId = order.PaymentInfo.TransactionId,
+                CreatedAt = order.PaymentInfo.CreatedAt
+            }
+        },
 
+                // Assigning list of Subscriptions (even if it's one object, we'll treat it as a list)
+                Subscriptions = order.Subscription == null ? new List<SubscriptionDTO>() : new List<SubscriptionDTO>
+        {
+            new SubscriptionDTO
+            {
+                Id = order.Subscription.Id,
+                SubType = order.Subscription.SubType,
+                SubDescription = order.Subscription.SubDescription,
+                SubPrice = order.Subscription.SubPrice
+            }
+        },
+
+                // Assigning list of Books (Books can have multiple, hence list)
+                Books = order.Book == null ? new List<BookDTO>() : new List<BookDTO>
+        {
+            new BookDTO
+            {
+                    Id = order.Id,
+                    BookName = order.Book.BookName,
+                    BookDescription = order.Book.BookDescription,
+                    BookDate = order.Book.BookDate,
+                    BookImage = order.Book.BookImage
+                }
+            }
+            };
             return Ok(orderDTO);
         }
 
@@ -72,8 +161,9 @@ namespace Ice_Cream.Controllers
                 Email = orderDTO.Email,
                 ContactDetails = orderDTO.ContactDetails,
                 Address = orderDTO.Address,
-                OrderType = orderDTO.OrderType,
-                OrderAmount = orderDTO.OrderAmount,
+                SubscriptionId = orderDTO.SubscriptionId,
+                BookId = orderDTO.BookId,
+                PaymentInfoId = orderDTO.PaymentInfoId,
                 OrderPrice = orderDTO.OrderPrice,
                 CreatedAt = DateTime.UtcNow
             };
@@ -94,8 +184,9 @@ namespace Ice_Cream.Controllers
             existingOrder.Email = orderDTO.Email;
             existingOrder.ContactDetails = orderDTO.ContactDetails;
             existingOrder.Address = orderDTO.Address;
-            existingOrder.OrderType = orderDTO.OrderType;
-            existingOrder.OrderAmount = orderDTO.OrderAmount;
+            existingOrder.SubscriptionId = orderDTO.SubscriptionId;
+            existingOrder.BookId = orderDTO.BookId;
+            existingOrder.PaymentInfoId = orderDTO.PaymentInfoId;
             existingOrder.OrderPrice = orderDTO.OrderPrice;
             existingOrder.CreatedAt = orderDTO.CreatedAt;
 

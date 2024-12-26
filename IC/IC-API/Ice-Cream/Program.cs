@@ -1,6 +1,8 @@
 using Ice_Cream.DB;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http.Headers;
 using System.Net.Mail;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,18 @@ var connectionString = builder.Configuration.GetConnectionString("MySqlConn");
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
+
+// Configure HttpClient for PayPal
+builder.Services.AddHttpClient("PayPal", client =>
+{
+    var config = builder.Configuration.GetSection("PayPal");
+    client.BaseAddress = new Uri(config["BaseUrl"] ?? throw new ArgumentNullException("PayPal:BaseUrl"));
+
+    var auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{config["ClientId"]}:{config["Secret"]}"));
+    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", auth);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+    // Remove "Content-Type" here; it will be set in the request content where necessary
 });
 
 // Configure SMTP

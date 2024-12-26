@@ -10,8 +10,6 @@ function CreateOrderForm() {
     email: "",
     contactDetails: "",
     address: "",
-    orderType: "",
-    orderAmount: "",
     orderPrice: "",
   });
 
@@ -90,24 +88,6 @@ const handleSubmit = async (e) => {
           placeholder="Address"
           className="mb-4 w-full border p-2"
           value={formData.address}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="orderType"
-          placeholder="Order Type"
-          className="mb-4 w-full border p-2"
-          value={formData.orderType}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="number"
-          name="orderAmount"
-          placeholder="Order Amount"
-          className="mb-4 w-full border p-2"
-          value={formData.orderAmount}
           onChange={handleChange}
           required
         />

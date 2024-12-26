@@ -2,7 +2,7 @@
 //   columnsDataDevelopment,
 // } from "./variables/columnsData";
 // import tableDataDevelopment from "./variables/tableDataDevelopment.json";
-import DevelopmentTable from "./components/DevelopmentTable";
+import DevelopmentTable from "./DevelopmentTable"
 import { Link } from "react-router-dom";
 
 const Tables = () => {
@@ -18,6 +18,8 @@ const Tables = () => {
       <div className="mt-5 grid h-full grid-cols-1 gap-5 md:grid-cols-1">
         <DevelopmentTable
         />
+
+      
         {/* 
         <DevelopmentTable2
           columnsData={columnsDataDevelopment}

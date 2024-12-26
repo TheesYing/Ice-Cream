@@ -73,6 +73,34 @@ namespace Ice_Cream.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("Ice_Cream.Models.Book", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("BookDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("BookDescription")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("BookImage")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("BookName")
+                        .HasColumnType("longtext");
+
+                    b.Property<float?>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Books");
+                });
+
             modelBuilder.Entity("Ice_Cream.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -84,6 +112,9 @@ namespace Ice_Cream.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("BookId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ContactDetails")
                         .HasColumnType("longtext");
 
@@ -93,24 +124,115 @@ namespace Ice_Cream.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("OrderAmount")
-                        .HasColumnType("int");
-
                     b.Property<float?>("OrderPrice")
                         .HasColumnType("float");
-
-                    b.Property<string>("OrderType")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("PaymentId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("PaymentInfoId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SubscriptionId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("PaymentInfoId")
+                        .IsUnique();
+
+                    b.HasIndex("SubscriptionId");
+
                     b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("Ice_Cream.Models.Subscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("SubDescription")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SubPrice")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SubType")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subscriptions");
+                });
+
+            modelBuilder.Entity("PaymentInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<float?>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentInfos");
+                });
+
+            modelBuilder.Entity("Ice_Cream.Models.Order", b =>
+                {
+                    b.HasOne("Ice_Cream.Models.Book", "Book")
+                        .WithMany("Orders")
+                        .HasForeignKey("BookId");
+
+                    b.HasOne("PaymentInfo", "PaymentInfo")
+                        .WithOne("Order")
+                        .HasForeignKey("Ice_Cream.Models.Order", "PaymentInfoId");
+
+                    b.HasOne("Ice_Cream.Models.Subscription", "Subscription")
+                        .WithMany("Orders")
+                        .HasForeignKey("SubscriptionId");
+
+                    b.Navigation("Book");
+
+                    b.Navigation("PaymentInfo");
+
+                    b.Navigation("Subscription");
+                });
+
+            modelBuilder.Entity("Ice_Cream.Models.Book", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Ice_Cream.Models.Subscription", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("PaymentInfo", b =>
+                {
+                    b.Navigation("Order")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
